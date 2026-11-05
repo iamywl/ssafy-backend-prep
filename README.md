@@ -1,61 +1,51 @@
 # 🎓 SSAFY 1학기 BackEnd & DB 과목평가 / Web 월말평가(실기) 완벽 대비 올인원 시스템
 
-본 저장소는 **11/09(월) 실시되는 SSAFY 과목평가(이론 32제) 및 Web 월말평가(실기 CRD)**를 비전공자 및 초보자도 쉽게 이해하고 100점 만점으로 통과할 수 있도록 구축된 통합 학습 및 모의평가 시스템입니다.
+본 저장소는 **11/09(월) 실시되는 SSAFY 과목평가(이론 32제) 및 Web 월말평가(실기 CRD)**를 비전공자 및 초보자도 쉽게 이해하고 100점 만점으로 통과할 수 있도록 구축된 통합 학습, 모의평가, 실습 분석 시스템입니다.
 
 ---
 
-## 🌐 1. 로컬 실시간 학습 사이트 접속 안내
+## 🌐 1. 실시간 웹 서비스 접속 안내
 
-현재 로컬 웹 서버(포트 8085)가 백그라운드로 실행 중이며, 브라우저를 통해 실전 모의고사와 실습 가이드를 즉시 이용하실 수 있습니다.
+PC와 모바일 어디서든 별도의 설치 없이 즉시 10회분 실전 모의고사 풀이 및 실습 코드 분석을 이용하실 수 있습니다.
 
-- **접속 URL**: [http://localhost:8085/WebTest_시험대비_학습웹.html](http://localhost:8085/WebTest_시험대비_학습웹.html) 또는 [http://localhost:8085/index.html](http://localhost:8085/index.html)
-- **로컬 파일 직접 열기**: [WebTest_시험대비_학습웹.html](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_시험대비_학습웹.html)
-- **서버 재실행 명령어** (필요 시):
+* 🌍 **GitHub Pages 온라인 실시간 배포 주소**:  
+  👉 **[https://iamywl.github.io/ssafy-backend-prep/](https://iamywl.github.io/ssafy-backend-prep/)**
+* 💻 **로컬 웹 서버 접속**:  
+  👉 **[http://localhost:8085/WebTest_시험대비_학습웹.html](http://localhost:8085/WebTest_시험대비_학습웹.html)** (또는 [http://localhost:8085/index.html](http://localhost:8085/index.html))
+* 📂 **GitHub 공식 저장소**:  
+  👉 **[https://github.com/iamywl/ssafy-backend-prep](https://github.com/iamywl/ssafy-backend-prep)**
+* 🖥️ **로컬 서버 재실행 명령어** (필요 시):
   ```powershell
   python -m http.server 8085 --directory "C:\Users\SSAFY\Desktop\JSP"
   ```
 
 ---
 
-## 🚀 2. GitHub 원격 저장소 푸시 및 GitHub Pages 웹 배포 가이드
+## 🌿 2. Git 브랜치 전략 및 배포 관리 안내
 
-본 프로젝트는 Git 저장소 초기화(`main` 브랜치)와 GitHub Pages 자동 인식을 위한 `index.html` 세팅이 완료되어 있습니다.
+본 프로젝트는 효율적인 버전 관리와 무중단 웹 호스팅을 위해 **브랜치를 이원화**하여 운영합니다.
 
-### [방법 A] 원클릭 배치 스크립트 실행
-1. 폴더 내 [deploy_to_git.bat](file:///C:/Users/SSAFY/Desktop/JSP/deploy_to_git.bat) 파일을 더블 클릭합니다.
-2. 본인의 GitHub 저장소 URL(`https://github.com/iamywl/<저장소명>.git`)을 입력하면 자동으로 원격 등록, 커밋, 푸시가 완료됩니다.
+| 브랜치명 | 역할 및 목적 | 원격 저장소 동기화 |
+| :--- | :--- | :---: |
+| **`main`** | 전체 소스코드(MVC 백엔드 프로젝트, Python QA 스크립트, 감사 보고서, 교육자료 등)의 개발 및 버전 관리 | `origin/main` |
+| **`gh-pages`** | **GitHub Pages 전용 웹 호스팅 브랜치** (`index.html`, `mock_exams.js`, 웹 에셋 자동 서비스) | `origin/gh-pages` |
 
-### [방법 B] 터미널 명령어 직접 실행
-```bash
-# 1. GitHub에서 신규 레포지토리(예: ssafy-backend-prep) 생성 후 원격 주소 연결
-git remote add origin https://github.com/iamywl/<레포지토리명>.git
-
-# 2. main 브랜치로 푸시
-git branch -M main
-git push -u origin main
-```
-
-### 🌍 GitHub Pages로 웹사이트 전 세계 실시간 배포하는 방법
-1. 푸시 완료 후 GitHub 저장소 상단 탭에서 **Settings** ➔ 좌측 사이드바 **Pages** 메뉴 클릭
-2. **Build and deployment** 항목의 **Branch** 설정:
-   - Branch: `main` 선택
-   - Folder: `/ (root)` 선택 (루트에 `index.html`이 배치되어 있어 즉시 인식됩니다)
-3. **Save** 버튼 클릭 후 약 1~2분 대기
-4. 상단에 안내되는 배포 주소(**`https://iamywl.github.io/<레포지토리명>/`**)로 접속하면 모바일, 태블릿, PC 어디서든 즉시 실전 모의고사 및 실습 가이드를 풀 수 있습니다!
+### 🚀 원클릭 동기화 및 배포 스크립트
+로컬에서 프로젝트를 수정한 뒤 한 번에 원격으로 푸시하려면 [deploy_to_git.bat](file:///C:/Users/SSAFY/Desktop/JSP/deploy_to_git.bat)를 더블 클릭하시면 됩니다.
 
 ---
 
-## 📸 2. 공식 시험 안내 공지 캡처본 및 상세 분석
+## 📸 3. 공식 시험 안내 공지 캡처본 및 상세 분석
 
 ### [공지 1] 11/09(월) 과목평가 (BackEnd & DB 이론) 안내
 ![과목평가 이론 안내 공지](docs/images/exam_theory_guide.png)
 
 #### 📝 이론 평가 구성 및 출제 기준
-- **시험 구성**: **총 32문제 (100점 만점)**
-  - **객관식 21문제** (각 2.5점 = 52.5점)
-  - **주관식 단답형 9문제** (각 3.0점 = 27.0점)
-  - **주관식 서술형 2문제** (각 10.25점 = 20.5점)
-- **🌟 [완비] 10회분 풀 모의고사 (총 320문제) 탑재**:
+- **시험 구성**: **총 32문제 (100.0점 만점)**
+  - **객관식 21문제** (각 2.5점 = **52.5점**)
+  - **주관식 단답형 9문제** (각 3.0점 = **27.0점**)
+  - **주관식 서술형 2문제** (각 10.25점 = **20.5점**)
+- **🌟 [전수 구축 완료] 10회분 풀 모의고사 (총 320문제) 테마별 구성**:
   1. **제1회**: 전범위 기본 완성 모의평가
   2. **제2회**: 서블릿 아키텍처 & 생명주기 집중형
   3. **제3회**: JSP 스크립트 & 4대 Scope/상태관리 특화형
@@ -91,36 +81,41 @@ git push -u origin main
    - MVC 기본 골격 및 싱글톤 패턴 완성본 제공
    - 공통 유틸 및 필터: `DBUtil.java`, `ControllerHelper`, `LoggingFilter` 완성본 제공
    - 기본 JSP 파일 일체 제공 (화면 UI 레이아웃만 구성 완료)
-   - ⚠️ **[초특급 주의사항]**: **코드 작성의 혼란을 방지하기 위해 'DaoImpl' 파일에만 `[TODO]`로 코드 작성 위치가 표기되어 있습니다. (Controller, Service, JSP 등 다른 파일에는 TODO 표기가 없으므로 수험생이 직접 필요한 로직을 완성해야 합니다!)**
+   - ⚠️ **[초특급 주의사항]**: **코드 작성의 혼란을 방지하기 위해 'DaoImpl' 파일에만 `[TODO]`로 코드 작성 위치가 표기되어 있습니다. (다른 파일에는 TODO 표기가 없으므로 주의!)**
 
 ---
 
-## 📋 3. 사용자 요구사항 및 단계별 해결 내역 총정리
+## 📋 4. 사용자 요구사항 및 단계별 해결 내역 총정리
 
 | 번호 | 요구사항 | 수행 및 구현 내역 | 관련 파일 / 링크 |
 | :---: | :--- | :--- | :--- |
-| **1** | **교육자료 가져오기** | `C:\Users\SSAFY\Desktop\lectmaterail`에서 서블릿, JSP, 세션/쿠키, MVC 관통, MySQL DDL/DML 등 핵심 교재 9종 복사 | [교육자료 폴더](file:///C:/Users/SSAFY/Desktop/JSP/교육자료) |
-| **2** | **실습 프로젝트 구축** | 파일별 8대 비주얼 탭(DaoImpl, Service, Controller, JSP) 기반 **수정 전(버그) ➔ 3분 원리 멘토링 ➔ 완성 코드(줄별 주석)** 혁신 개편 | [WebTest_시험대비_학습웹.html](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_시험대비_학습웹.html), [WebTest_sample_완성](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_sample_완성) |
-| **3** | **이론 모의고사 10회분 탑재** | 기계적 암기 배제, **실전 자바 코드 실행 결과 예측 & SQL 집계(NULL)/트랜잭션(SAVEPOINT) 시뮬레이션형** 10회분(총 320문제) 전면 재구축 | [WebTest_시험대비_학습웹.html](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_시험대비_학습웹.html), [mock_exams.js](file:///C:/Users/SSAFY/Desktop/JSP/mock_exams.js) |
-| **4** | **QA 에이전트 및 평가** | 4단계 정밀 QA 검증 에이전트(`web_backend_qa_agent.py`) 개발, 완성본 프로젝트 **100점 만점(APPROVED)** 검증 완료 | [QA_에이전트_종합평가보고서.md](file:///C:/Users/SSAFY/Desktop/JSP/QA_에이전트_종합평가보고서.md) |
-| **5** | **로컬 웹 호스팅** | 포트 8085에 백그라운드 웹서버 구동 및 Windows 기본 브라우저 자동 실행 | `http://localhost:8085/WebTest_시험대비_학습웹.html` |
-| **6** | **신규 실기 가이드 반영** | `back월말가이드.txt` 공지에 따라 **CRD(등록, 목록, 상세, 삭제)** 기능 및 `detail.jsp` 전수 구현 | [WebTest_sample_완성](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_sample_완성) |
-| **7** | **캡처본 관리 & 리드미** | 시험 공지 이미지 2건 안전 저장 및 본 `README.md` 작성 | [docs/images](file:///C:/Users/SSAFY/Desktop/JSP/docs/images) |
+| **1** | **교육자료 가져오기** | `C:\Users\SSAFY\Desktop\lectmaterail`에서 서블릿, JSP, 세션/쿠키, MVC 관통, MySQL DDL/DML 등 교재 9종 안전 복사 | [교육자료 폴더](file:///C:/Users/SSAFY/Desktop/JSP/교육자료) |
+| **2** | **실습 사이트 제작** | 파일별 8대 비주얼 탭(DaoImpl, Service, Controller, JSP) 기반 **수정 전(버그) ➔ 3분 원리 멘토링 ➔ 완성 코드(줄별 주석)** 구성 | [WebTest_시험대비_학습웹.html](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_시험대비_학습웹.html), [WebTest_sample_완성](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_sample_완성) |
+| **3** | **이론 모의고사 10회분 구축** | 단순 암기 지양, **실전 자바 코드 실행 결과 예측 & SQL 집계(NULL)/트랜잭션(SAVEPOINT) 시뮬레이션형** 10회분(총 320문제) 탑재 | [mock_exams.js](file:///C:/Users/SSAFY/Desktop/JSP/mock_exams.js) |
+| **4** | **QA 에이전트 및 평가** | 4단계 정밀 QA 검증 에이전트([web_backend_qa_agent.py](file:///C:/Users/SSAFY/Desktop/JSP/web_backend_qa_agent.py)) 개발, 완성본 프로젝트 **100점 만점(APPROVED)** 획득 | [QA_에이전트_종합평가보고서.md](file:///C:/Users/SSAFY/Desktop/JSP/QA_에이전트_종합평가보고서.md) |
+| **5** | **가이드라인 전수 감사** | 10회차 320문제 전수 및 실기 10대 체크포인트 대상 공식 가이드라인 정밀 검증 스크립트 실행, **100% ALL PASS** 확인 | [가이드라인_준수_검토보고서.md](file:///C:/Users/SSAFY/Desktop/JSP/docs/가이드라인_준수_검토보고서.md) |
+| **6** | **로컬 웹 호스팅** | 포트 8085에 백그라운드 웹서버 구동 및 로컬 실시간 서빙 | `http://localhost:8085/WebTest_시험대비_학습웹.html` |
+| **7** | **Git 원격 배포 및 Pages 구축** | Git 저장소 초기화, `main`/`gh-pages` 브랜치 분리, GitHub 원격 저장소 푸시 및 GitHub Pages 실시간 배포 완료 | [ssafy-backend-prep](https://github.com/iamywl/ssafy-backend-prep) |
 
 ---
 
-## 📂 4. 디렉터리 구조 및 주요 파일 안내
+## 📂 5. 디렉터리 구조 및 주요 파일 안내
 
 ```
 C:\Users\SSAFY\Desktop\JSP
-├── README.md                           # 📌 본 문서 (전체 요구사항 & 시험 안내 종합 보고서)
-├── WebTest_시험대비_학습웹.html         # 🌐 실습 가이드 + 32제 실전 모의고사 올인원 웹 포털
+├── README.md                           # 📌 본 문서 (전체 요구사항 & 가이드라인 종합 보고서)
+├── index.html                          # 🌐 GitHub Pages 배포용 루트 진입 웹 포털
+├── WebTest_시험대비_학습웹.html         # 🌐 실습 가이드 + 32제 실전 모의고사 올인원 학습 웹
+├── mock_exams.js                       # 🧠 10회차 풀 모의고사 320문제 데이터셋 (정답, 해설, 배점)
+├── deploy_to_git.bat                   # 🚀 원클릭 Git 원격 푸시 배치 스크립트
+├── audit_guideline_compliance.py       # 🔍 공식 가이드라인 준수 여부 전수 감사 스크립트
 ├── web_backend_qa_agent.py             # 🛡️ 4단계 자동 QA 검증 에이전트 스크립트
 ├── QA_에이전트_종합평가보고서.md        # 📊 QA 에이전트 검증 리포트 (완성본 100점 만점 인증)
 ├── WebTest_sample.pdf                  # 📄 공식 실기 샘플 시험 명세서
 ├── WebTest_sample.zip                  # 📦 원본 실기 프로젝트 압축 파일
 │
 ├── docs/                               # 📁 문서 및 캡처 이미지 관리
+│   ├── 가이드라인_준수_검토보고서.md   # 📋 이론 27개 세부항목 & 실기 10개 체크포인트 전수 감사서
 │   └── images/
 │       ├── exam_theory_guide.png       # 📸 11/09 과목평가(이론) 안내 공지 캡처본
 │       └── exam_practical_guide.png    # 📸 11/09 Web 월말평가(실기) 안내 공지 캡처본
@@ -155,14 +150,14 @@ C:\Users\SSAFY\Desktop\JSP
             └── gear/
                 ├── list.jsp            # <c:forEach> 목록 조회 & 상세/삭제 링크
                 ├── regist.jsp          # 제품 등록 폼 (action=regist)
-                └── detail.jsp          # 🌟 [신규] 제품 상세 조회 & 삭제 연동 뷰
+                └── detail.jsp          # 🌟 제품 상세 조회 & 삭제 연동 뷰
 ```
 
 ---
 
-## ⚡ 5. 실기 시험장 10분 컷 작성 순서 가이드
+## ⚡ 6. 실기 시험장 10분 컷 작성 순서 가이드
 
-> 💡 **주의**: 실기 시험에서는 `DaoImpl`에만 `[TODO]`가 있습니다! 아래 순서대로 작성하면 막힘없이 10분 만에 완성할 수 있습니다.
+> 💡 **주의**: 실기 시험에서는 **`DaoImpl`에만 `[TODO]`**가 있습니다! 아래 순서대로 작성하면 막힘없이 10분 만에 완성할 수 있습니다.
 
 1. **Step 1. DB 세팅**: MySQL Workbench에서 `src/main/resources/ssafy_gear.sql` 전체 실행 ➔ `ssafy_gear` DB 생성 확인
 2. **Step 2. Maven Update**: Eclipse에서 프로젝트 우클릭 ➔ `Maven` ➔ `Update Project...` 실행 (빨간줄 즉시 제거)
