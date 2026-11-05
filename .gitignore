@@ -1,0 +1,42 @@
+# Maven build output
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Eclipse
+.metadata/
+.project
+.classpath
+.settings/
+bin/
+tmp/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# SSAFY Security: 공개(Public) 저장소로 배포할 경우 내부 교안 PDF 유출 방지
+# (필요시 아래 주석을 해제하여 비공개할 수 있습니다)
+# 교육자료/

@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSAFY 백엔드 & DB 과목평가 완벽 대비 올인원 포털</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-bg: #eff6ff;
+      --secondary: #0d9488;
+      --secondary-bg: #f0fdfa;
+      --dark: #0f172a;
+      --text: #334155;
+      --text-muted: #64748b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --code-bg: #1e293b;
+      --code-text: #f1f5f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+      color: white;
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    }
+
+    header h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.92;
+      max-width: 850px;
+      margin: 0 auto 1rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 1.8rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.8rem;
+      overflow-x: auto;
+      background: white;
+      padding: 0.6rem 0.6rem 0;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .tab-btn {
+      padding: 0.85rem 1.3rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab-btn:hover { color: var(--primary-light); }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background-color: var(--primary-bg);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Exam Simulator Header */
+    .exam-header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .timer-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .filter-pill {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Question Box */
+    .quiz-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      margin-bottom: 1.3rem;
+      transition: border-color 0.2s;
+    }
+
+    .quiz-card:hover { border-color: #94a3b8; }
+
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .quiz-num {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    .quiz-tag {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .tag-mcq { background: #e0f2fe; color: #0369a1; }
+    .tag-short { background: #fef3c7; color: #b45309; }
+    .tag-essay { background: #fce7f3; color: #be185d; }
+
+    .quiz-question {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      white-space: pre-line;
+    }
+
+    /* MCQ Options */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all 0.2s;
+    }
+
+    .option-item:hover {
+      background: #f8fafc;
+      border-color: var(--primary-light);
+    }
+
+    .option-item input[type="radio"] {
+      margin-right: 0.75rem;
+      accent-color: var(--primary);
+    }
+
+    .option-item.selected {
+      background: var(--primary-bg);
+      border-color: var(--primary-light);
+      font-weight: 600;
+    }
+
+    .option-item.correct {
+      background: var(--success-bg) !important;
+      border-color: var(--success) !important;
+      color: #15803d;
+      font-weight: 700;
+    }
+
+    .option-item.incorrect {
+      background: var(--danger-bg) !important;
+      border-color: var(--danger) !important;
+      color: #b91c1c;
+    }
+
+    /* Short Answer Input */
+    .short-input-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .short-input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .short-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    /* Essay Input */
+    .essay-textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 0.8rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      resize: vertical;
+      margin-top: 0.5rem;
+    }
+
+    .essay-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      font-size: 0.9rem;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .explanation-box.show { display: block; }
+    .explanation-box strong { color: var(--dark); }
+
+    /* Action Buttons */
+    .submit-exam-btn {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      margin: 2rem 0;
+      box-shadow: 0 4px 12px rgba(22,163,74,0.25);
+      transition: transform 0.15s;
+    }
+
+    .submit-exam-btn:hover { transform: translateY(-2px); }
+
+    .round-btn {
+      padding: 0.45rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      color: var(--text);
+    }
+    .round-btn:hover { background: #f1f5f9; border-color: var(--primary-light); color: var(--primary); }
+    .round-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 4px rgba(30,64,175,0.2); }
+
+    /* Score Modal / Card */
+    .result-dashboard {
+      display: none;
+      background: white;
+      border-radius: 14px;
+      border: 2px solid var(--primary);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .result-dashboard.show { display: block; }
+
+    .score-banner {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--primary-bg);
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .score-number {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    /* Summary Notes Styles */
+    .topic-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      margin-bottom: 1.4rem;
+      background: white;
+    }
+
+    .topic-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .key-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.9rem;
+    }
+
+    .key-table th, .key-table td {
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+    }
+
+    .key-table th { background: #f1f5f9; font-weight: 700; }
+
+    /* Code Blocks & Practical Redesign */
+    .file-tabs-bar {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding: 0.5rem 0.2rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .file-tab-btn {
+      padding: 0.55rem 1rem;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .file-tab-btn:hover { background: #f8fafc; color: var(--primary); }
+    .file-tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(30,64,175,0.2);
+    }
+
+    .code-diff-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+    }
+
+    .diff-badge-before {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+    }
+
+    .diff-badge-after {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+    }
+
+    .explain-card {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 1rem 1.3rem;
+      margin: 1.2rem 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.92rem;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    pre code {
+      display: block;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 1.3rem;
+      font-family: "JetBrains Mono", Consolas, Monaco, monospace;
+      font-size: 0.94rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      border-radius: 8px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+    /* Metaphor Grid */
+    .metaphor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin: 1.2rem 0;
+    }
+
+    .metaphor-card {
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--primary-light);
+    }
+
+    .metaphor-role {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .metaphor-tech {
+      font-size: 0.85rem;
+      color: var(--secondary);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Problem Box (Practical) */
+    .problem-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      background: white;
+    }
+
+    .problem-header {
+      background: #f8fafc;
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .problem-header h3 { font-size: 1.1rem; color: var(--dark); font-weight: 700; }
+
+    .problem-body { padding: 1.4rem; }
+
+    .toggle-answer-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.55rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .answer-content {
+      display: none;
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px dashed #cbd5e1;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .answer-content.show { display: block; }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.4rem; }
+      .container { padding: 0 1rem; }
+      .tab-btn { padding: 0.7rem 0.9rem; font-size: 0.88rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SSAFY 1학기 과목평가(BackEnd & DB) 완벽 대비 포털</h1>
+    <p>11/09(월) 평가 안내 공지 100% 반영: 실기 실습 문제 + 총 32문제(객관식 21, 단답형 9, 서술형 2) 풀모의고사</p>
+    <div class="badge-bar">
+      <span class="badge">📝 실전 모의고사 32제 탑재</span>
+      <span class="badge">⏱️ 실시간 60분 타이머 & 자동채점</span>
+      <span class="badge">🛠️ WebTest_sample 실습 구현</span>
+      <span class="badge">📚 7대 핵심요약집</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Tabs Nav -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('exam-sim')">📝 1. 과목평가 실전 모의고사 (총 32문제)</button>
+      <button class="tab-btn" onclick="switchTab('notes')">📚 2. 7대 출제영역 핵심 요약집</button>
+      <button class="tab-btn" onclick="switchTab('practical')">🛠️ 3. WebTest_sample 실습형 대비 (6단계)</button>
+      <button class="tab-btn" onclick="switchTab('codes')">💻 4. 완성본 전체 소스코드 뷰어</button>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 1: 실전 모의고사 32문제 시뮬레이터 -->
+    <!-- ================================================================= -->
+    <div id="tab-exam-sim" class="tab-content active">
+      <!-- Round Selector (1회~10회) -->
+      <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+          <span style="font-weight: 800; color: var(--dark); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🎯</span> 모의고사 회차 선택 (총 10회분 / 320문항 완비)
+          </span>
+          <span id="current-round-title" style="font-size: 0.9rem; font-weight: 700; color: var(--primary); background: var(--primary-bg); padding: 0.35rem 0.9rem; border-radius: 20px;">
+            제1회: 전범위 기본 완성 모의평가
+          </span>
+        </div>
+        <div style="display: flex; gap: 0.45rem; overflow-x: auto; padding-bottom: 0.4rem;" id="round-btn-container">
+          <!-- Injected by JS: 1회 ~ 10회 버튼 -->
+        </div>
+      </div>
+
+      <div class="exam-header">
+        <div>
+          <h2 style="font-size: 1.35rem; margin-bottom: 0.3rem;" id="exam-display-heading">📝 제1회 과목평가 실전 모의테스트</h2>
+          <p style="font-size: 0.9rem; opacity: 0.85;">객관식 21문항 (52.5점) + 단답형 9문항 (27점) + 서술형 2문항 (20.5점) = 총 100점 만점</p>
+        </div>
+        <div class="timer-box">
+          <span>⏱️ 남은 시간:</span>
+          <span id="exam-timer">60:00</span>
+        </div>
+      </div>
+
+      <!-- Result Dashboard (Hidden until submitted) -->
+      <div id="result-dashboard" class="result-dashboard">
+        <div class="score-banner">
+          <h3 style="color: var(--text-muted); margin-bottom: 0.5rem;">최종 모의평가 결과</h3>
+          <div class="score-number" id="final-score-display">0.0 / 100.0</div>
+          <p id="final-feedback" style="font-size: 1.1rem; font-weight: 700; margin-top: 0.5rem;"></p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; text-align: center;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">객관식 (21문항)</div>
+            <strong id="mcq-score-stat" style="font-size: 1.3rem; color: var(--primary);">0 / 21</strong>
+          </div>
+          <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; text-align: center;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">주관식 단답형 (9문항)</div>
+            <strong id="short-score-stat" style="font-size: 1.3rem; color: var(--warning);">0 / 9</strong>
+          </div>
+          <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; text-align: center;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">주관식 서술형 (2문항)</div>
+            <strong id="essay-score-stat" style="font-size: 1.3rem; color: var(--secondary);">0 / 2</strong>
+          </div>
+        </div>
+        <button class="toggle-answer-btn" style="width: 100%; justify-content: center; padding: 0.8rem;" onclick="scrollToReview()">
+          🔍 오답 및 상세 해설 확인하기
+        </button>
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="filter-pills">
+        <span class="filter-pill active" onclick="filterQuiz('all', this)">전체 보기 (32제)</span>
+        <span class="filter-pill" onclick="filterQuiz('mcq', this)">객관식 (21제)</span>
+        <span class="filter-pill" onclick="filterQuiz('short', this)">단답형 (9제)</span>
+        <span class="filter-pill" onclick="filterQuiz('essay', this)">서술형 (2제)</span>
+      </div>
+
+      <!-- Questions Container -->
+      <div id="quiz-list-container">
+        <!-- Questions injected by JS -->
+      </div>
+
+      <button class="submit-exam-btn" onclick="submitExam()">
+        🏁 답안 제출 및 실시간 채점하기
+      </button>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 2: 7대 출제영역 핵심 요약집 -->
+    <!-- ================================================================= -->
+    <div id="tab-notes" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>📖</span>
+          <span>11/09 평가 공지 7대 핵심 영역 3분 요약 노트</span>
+        </div>
+        <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
+          공지에 안내된 7대 평가 항목의 핵심 철자, 메서드, 작동 구조를 압축 정리했습니다. 시험 직전 5분 복습용으로 최적화되어 있습니다.
+        </p>
+
+        <!-- Topic 1 -->
+        <div class="topic-card">
+          <div class="topic-title">1. Servlet 기본 및 아키텍처</div>
+          <table class="key-table">
+            <tr>
+              <th style="width: 28%;">핵심 개념</th>
+              <th>시험 필수 암기 내용</th>
+            </tr>
+            <tr>
+              <td><strong>생명주기 메서드</strong></td>
+              <td><code>init()</code>: 최초 1회 초기화 ➔ <code>service()</code>: 요청마다 스레드 할당되어 <code>doGet()</code>/<code>doPost()</code> 호출 ➔ <code>destroy()</code>: 서블릿 언로드 시 1회</td>
+            </tr>
+            <tr>
+              <td><strong>싱글톤 & 멀티스레드</strong></td>
+              <td>서블릿 인스턴스는 <strong>단 1개만 생성(싱글톤)</strong>되며, 요청마다 별도의 <strong>스레드(Thread)</strong>가 생성되어 service()를 호출. 따라서 <strong>멤버 변수(필드)는 공유되므로 스레드 안전(Thread-safe)하지 않음!</strong></td>
+            </tr>
+            <tr>
+              <td><strong>URL 매핑 우선순위</strong></td>
+              <td>① 정확한 경로 매핑 (<code>/car/list</code>) ➔ ② 디렉터리 와일드카드 (<code>/car/*</code>) ➔ ③ 확장자 매핑 (<code>*.do</code>) ➔ ④ 기본 서블릿 (<code>/</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Filter & DispatcherType</strong></td>
+              <td><code>chain.doFilter(req, resp)</code>로 체이닝. <code>DispatcherType</code> 설정: <code>REQUEST</code>(기본 클라이언트 요청), <code>FORWARD</code>(포워드 요청 시 필터 적용), <code>INCLUDE</code>, <code>ERROR</code></td>
+            </tr>
+            <tr>
+              <td><strong>Front Controller 패턴</strong></td>
+              <td>모든 요청을 단일 서블릿(`GearController`)이 받아 인코딩/세션검사 등 공통 작업 수행 후 로직 위임</td>
+            </tr>
+            <tr>
+              <td><strong>web.xml 에러 매핑</strong></td>
+              <td><code>&lt;error-page&gt;&lt;error-code&gt;404&lt;/error-code&gt;&lt;location&gt;/error/404.jsp&lt;/location&gt;&lt;/error-page&gt;</code></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="topic-card">
+          <div class="topic-title">2. JSP 및 상태 관리</div>
+          <table class="key-table">
+            <tr>
+              <th style="width: 28%;">핵심 개념</th>
+              <th>시험 필수 암기 내용</th>
+            </tr>
+            <tr>
+              <td><strong>JSP 요소 변환 구조</strong></td>
+              <td><code>&lt;%! 선언문 %&gt;</code> ➔ 서블릿 <strong>클래스 멤버(필드/메서드)</strong>로 변환<br><code>&lt;% 스크립트릿 %&gt;</code>, <code>&lt;%= 표현식 %&gt;</code> ➔ <strong><code>_jspService()</code> 메서드 내부 지역변수/로직</strong>으로 변환</td>
+            </tr>
+            <tr>
+              <td><strong>include 비교</strong></td>
+              <td><code>&lt;%@ include file="..." %&gt;</code>: 번역 시 정적 소스 병합 (변수 공유)<br><code>&lt;jsp:include page="..." /&gt;</code>: 런타임 동적 요청 위임 (결과 HTML 병합)</td>
+            </tr>
+            <tr>
+              <td><strong>4대 Scope 탐색 우선순위</strong></td>
+              <td><code>${name}</code> 호출 시 탐색 순서: <strong>pageContext ➔ request ➔ session ➔ application</strong> (좁은 범위 ➔ 넓은 범위)</td>
+            </tr>
+            <tr>
+              <td><strong>JSTL Core 태그</strong></td>
+              <td>단일 조건: <code>&lt;c:if test="..."&gt;</code> (else 없음)<br>다중 조건(if-else): <code>&lt;c:choose&gt;</code> 안에 <code>&lt;c:when test="..."&gt;</code>와 <code>&lt;c:otherwise&gt;</code></td>
+            </tr>
+            <tr>
+              <td><strong>세션 식별 쿠키 & 무효화</strong></td>
+              <td>세션 식별 기본 쿠키 이름: <code>JSESSIONID</code><br>세션 즉시 무효화 메서드: <code>session.invalidate();</code></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Topic 3 & 4: SQL, DDL/DML, 트랜잭션 -->
+        <div class="topic-card">
+          <div class="topic-title">3 & 4. SQL 기본, DDL/DML, 트랜잭션, 고급 서브쿼리</div>
+          <table class="key-table">
+            <tr>
+              <th style="width: 28%;">핵심 개념</th>
+              <th>시험 필수 암기 내용</th>
+            </tr>
+            <tr>
+              <td><strong>DELETE vs TRUNCATE vs DROP</strong></td>
+              <td>• <code>DELETE</code>: DML, WHERE 절 가능, 행 단위 삭제, 롤백(Undo) 가능, 느림<br>• <code>TRUNCATE</code>: DDL, 전체 행 고속 삭제, 테이블 구조 유지, 롤백 불가<br>• <code>DROP</code>: DDL, 테이블 구조 및 데이터 완전 삭제, 롤백 불가</td>
+            </tr>
+            <tr>
+              <td><strong>외래키 제약조건 삭제</strong></td>
+              <td><code>ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건명;</code> (MySQL 문법)</td>
+            </tr>
+            <tr>
+              <td><strong>삼치 논리와 NULL 연산</strong></td>
+              <td>SQL은 True, False, Unknown 3가지 논리 상태. <code>NULL = NULL</code> ➔ <code>Unknown</code>!<br>NULL 검사는 반드시 <code>IS NULL</code> 또는 <code>IS NOT NULL</code> 사용</td>
+            </tr>
+            <tr>
+              <td><strong>LIMIT & 문자열 결합</strong></td>
+              <td>페이징: <code>LIMIT 시작위치(0부터), 개수</code> (예: 3페이지 <code>LIMIT 20, 10</code>)<br>문자열 결합: <code>CONCAT(str1, str2, ...)</code></td>
+            </tr>
+            <tr>
+              <td><strong>트랜잭션 부분 롤백</strong></td>
+              <td><code>SAVEPOINT 포인트명;</code> ➔ <code>ROLLBACK TO SAVEPOINT 포인트명;</code></td>
+            </tr>
+            <tr>
+              <td><strong>다중 행 / 스칼라 서브쿼리</strong></td>
+              <td>• <strong>스칼라 서브쿼리</strong>: SELECT 절 위치, 단 1행 1열만 반환<br>• <strong>다중 행 연산자</strong>: <code>IN</code>, <code>ANY/SOME</code>(하나라도 만족), <code>ALL</code>(모두 만족)<br>• <strong>상호 연관 서브쿼리</strong>: 메인 쿼리 컬럼을 서브쿼리가 참조. 존재 여부 검사는 <code>EXISTS</code> / <code>NOT EXISTS</code></td>
+            </tr>
+            <tr>
+              <td><strong>차집합 & 뷰(View)</strong></td>
+              <td>차집합: <code>EXCEPT</code> (또는 NOT IN/NOT EXISTS)<br>뷰: 디스크에 저장되지 않는 <strong>가상 테이블</strong>. 집계함수/GROUP BY/DISTINCT 포함 시 DML(INSERT/UPDATE) 제한</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Topic 5, 6, 7: 인덱스, 정규화, 서술형 단골 -->
+        <div class="topic-card">
+          <div class="topic-title">5, 6, 7. DB 설계/인덱스 & 주관식 서술형 2대 테마 비교</div>
+          <table class="key-table">
+            <tr>
+              <th style="width: 28%;">핵심 개념</th>
+              <th>시험 필수 암기 내용</th>
+            </tr>
+            <tr>
+              <td><strong>정규화 단계</strong></td>
+              <td>• <strong>1NF</strong>: 모든 속성의 도메인이 원자값(Atomic value)<br>• <strong>2NF</strong>: 1NF 만족 + <strong>부분 함수적 종속 제거 (완전 함수적 종속)</strong><br>• <strong>3NF</strong>: 2NF 만족 + <strong>이행적 함수적 종속 제거 (A➔B, B➔C 제거)</strong><br>• <strong>BCNF</strong>: <strong>모든 결정자가 후보키</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Clustered vs Secondary Index</strong></td>
+              <td>• <strong>Clustered Index</strong>: 기본키(PK) 기준 실제 데이터 행이 물리적으로 정렬되어 리프 노드에 저장 (테이블당 1개)<br>• <strong>Secondary Index</strong>: 보조 인덱스, 리프 노드에 실제 데이터가 아닌 PK 주소를 저장 (테이블당 여러 개 가능)</td>
+            </tr>
+            <tr>
+              <td><strong>[서술형 1] forward vs sendRedirect</strong></td>
+              <td>① <strong>요청/응답 왕복</strong>: forward는 서버 내부 이동으로 <strong>1회</strong>, sendRedirect는 302 응답 후 브라우저 재요청으로 <strong>2회</strong><br>② <strong>URL 변경</strong>: forward는 <strong>URL 불변</strong>, sendRedirect는 <strong>새 URL로 변경</strong><br>③ <strong>request 속성 공유</strong>: forward는 <strong>request 객체 유지되어 공유 가능</strong>, sendRedirect는 <strong>새 request 생성되어 공유 불가</strong></td>
+            </tr>
+            <tr>
+              <td><strong>[서술형 2] WHERE 절 vs HAVING 절</strong></td>
+              <td>① <strong>조건 적용 시점</strong>: WHERE는 GROUP BY <strong>그룹화 전 개별 행(Row)</strong>에 적용, HAVING은 GROUP BY <strong>그룹화 후 집계 그룹</strong>에 적용<br>② <strong>집계 함수 사용</strong>: WHERE는 <strong>집계 함수(COUNT, SUM 등) 사용 불가</strong>, HAVING은 <strong>집계 함수 사용 가능</strong></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 3: WebTest_sample 실습형 대비 (완전 개편: 파일별 비주얼 Before & After) -->
+    <!-- ================================================================= -->
+    <div id="tab-practical" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>🛠️</span>
+          <span>WebTest_sample 실기 전 파일 1:1 완벽 정복 (읽기 쉬운 코드 뷰어)</span>
+        </div>
+        
+        <div class="tip-box" style="background: #fef2f2; border-left: 4px solid #ef4444; color: #991b1b; margin-bottom: 1.5rem; font-size: 0.95rem;">
+          <strong style="font-size: 1.05rem;">🚨 [11/09 실기시험 필수 주의사항]</strong><br>
+          시험지 압축을 풀면 <strong>'DaoImpl' 파일에만 [TODO]가 적혀 있습니다!</strong><br>
+          Controller, Service, JSP 파일들에는 [TODO]가 전혀 없으므로, 수험생이 직접 아래의 파일 탭을 눌러 <strong>어느 파일의 어느 위치를 수정해야 하는지</strong> 반드시 숙지해야 합니다.
+        </div>
+
+        <!-- Practical File Navigation Tabs -->
+        <div class="file-tabs-bar">
+          <button class="file-tab-btn active" onclick="switchPracFile('dao', this)">1. GearDaoImpl.java (★유일한 TODO)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('service', this)">2. GearServiceImpl.java</button>
+          <button class="file-tab-btn" onclick="switchPracFile('ctrl', this)">3. GearController.java (CRD+세션/쿠키)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('header', this)">4. header.jsp (세션 분기)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('list', this)">5. list.jsp (c:forEach)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('regist', this)">6. regist.jsp (폼 전송)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('detail', this)">7. detail.jsp (상세/삭제)</button>
+          <button class="file-tab-btn" onclick="switchPracFile('login', this)">8. login-form.jsp (쿠키)</button>
+        </div>
+
+        <!-- 1. GearDaoImpl.java Panel -->
+        <div id="prac-file-dao" class="prac-file-panel">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/java/com/ssafy/sample/model/dao/GearDaoImpl.java</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태 (버그 및 빈칸)</span>
+          <div class="code-container">
+            <pre><code>// [버그 1] 로그인 SQL이 빈 문자열("")로 방치됨
+String sql = "";
+
+// [버그 2 - 치명적!] rs!=null 은 무한 루프를 돌아 서버가 멈춥니다!
+while(rs != null) {
+    Gear gear = new Gear();
+    // 데이터 추출...
+    list.add(gear);
+}
+
+// [버그 3] insert() 파라미터 바인딩과 executeUpdate()가 누락됨
+/* [TODO]: 파라미터 바인딩 및 쿼리를 실행하는 코드를 완성하시오.*/</code></pre>
+          </div>
+
+          <div class="explain-card">
+            <strong>💡 왜 고쳐야 하는가? (초보자 3분 과외)</strong><br>
+            • <code>rs != null</code> 버그: ResultSet은 조회 결과가 0건이어도 null이 아닙니다! 따라서 <code>rs!=null</code>은 영원히 true가 되어 서버가 무한루프에 빠지고 톰캣이 뻗습니다. 반드시 다음 행으로 커서를 이동시키는 <code>rs.next()</code>로 고쳐야 합니다.<br>
+            • 실기 평가 공지에 <strong>CRD(등록, 목록, 상세, 삭제)</strong>가 지정되었으므로, 단건 상세조회(<code>selectByCode</code>)와 삭제(<code>deleteByCode</code>) 메서드도 함께 작성해야 만점입니다!
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드 (친절한 한글 주석)</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>// 1. 로그인 SQL 쿼리 완성:
+String sql = "SELECT name, email, password, role FROM member WHERE email = ? AND password = ?";
+
+// 2. selectAll()의 while 조건문 수정 (무한루프 해결):
+while (rs.next()) { // [수정] rs!=null 대신 rs.next()로 한 행씩 전진!
+    Gear gear = new Gear();
+    gear.setCode(rs.getString("code"));
+    gear.setName(rs.getString("name"));
+    gear.setPrice(Integer.parseInt(rs.getString("price")));
+    gear.setBrand(rs.getString("brand"));
+    gear.setColor(rs.getString("color"));
+    list.add(gear);
+}
+
+// 3. insert() 파라미터 5개 바인딩 및 쿼리 실행:
+pstmt.setString(1, gear.getCode());
+pstmt.setString(2, gear.getName());
+pstmt.setInt(3, gear.getPrice());
+pstmt.setString(4, gear.getBrand());
+pstmt.setString(5, gear.getColor());
+cnt = pstmt.executeUpdate(); // [필수] INSERT/UPDATE/DELETE는 executeUpdate()!
+
+// 4. [신규 CRD] 상세 조회 (selectByCode):
+String sql = "SELECT code, name, price, brand, color FROM gear WHERE code = ?";
+pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, code);
+rs = pstmt.executeQuery();
+if (rs.next()) {
+    gear = new Gear(rs.getString("code"), rs.getString("name"), 
+                    rs.getInt("price"), rs.getString("brand"), rs.getString("color"));
+}
+
+// 5. [신규 CRD] 제품 삭제 (deleteByCode):
+String sql = "DELETE FROM gear WHERE code = ?";
+pstmt = conn.prepareStatement(sql);
+pstmt.setString(1, code);
+cnt = pstmt.executeUpdate();</code></pre>
+          </div>
+        </div>
+
+        <!-- 2. GearServiceImpl.java Panel -->
+        <div id="prac-file-service" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/java/com/ssafy/sample/model/service/GearServiceImpl.java</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태</span>
+          <div class="code-container">
+            <pre><code>// 인터페이스 메서드들이 전부 null이나 0을 리턴하고 있음
+@Override
+public Member login(String email, String password) { return null; }
+@Override
+public List&lt;Gear&gt; selectAll() { return null; }
+@Override
+public int insert(Gear gear) { return 0; }</code></pre>
+          </div>
+
+          <div class="explain-card">
+            <strong>💡 왜 고쳐야 하는가? (초보자 3분 과외)</strong><br>
+            • <code>GearService</code> 인터페이스에는 <code>throws SQLException</code>이 선언되어 있지 않습니다!<br>
+            • 따라서 DAO를 호출할 때 발생하는 <code>SQLException</code>을 Service 내부에서 반드시 <code>try-catch</code>로 잡아서 예외 로그를 출력하고 null/0을 안전하게 반환해야 합니다.
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>// 싱글톤 DAO 객체 연결
+private final GearDao dao = GearDaoImpl.getInstance();
+
+@Override
+public Member login(String email, String password) {
+    try {
+        return dao.login(email, password); // DAO 호출
+    } catch (SQLException e) {
+        e.printStackTrace(); // 예외 수습
+    }
+    return null;
+}
+
+@Override
+public List&lt;Gear&gt; selectAll() {
+    try {
+        return dao.selectAll();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+@Override
+public int insert(Gear gear) {
+    try {
+        return dao.insert(gear);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+@Override
+public Gear selectByCode(String code) {
+    try {
+        return dao.selectByCode(code);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+@Override
+public int deleteByCode(String code) {
+    try {
+        return dao.deleteByCode(code);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 3. GearController.java Panel -->
+        <div id="prac-file-ctrl" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/java/com/ssafy/sample/controller/GearController.java</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태</span>
+          <div class="code-container">
+            <pre><code>@WebServlet() // [치명적] URL 매핑 주소가 비어있음!
+public class GearController extends HttpServlet implements ControllerHelper {
+    protected void doGet(...) { /* 아무 코드도 없음! */ }
+    protected void doPost(...) { /* 아무 코드도 없음! */ }
+}</code></pre>
+          </div>
+
+          <div class="explain-card">
+            <strong>💡 왜 고쳐야 하는가? (초보자 3분 과외)</strong><br>
+            • <code>@WebServlet({"/gear", "/member"})</code> 매핑을 달아주어야 404 에러가 나지 않습니다.<br>
+            • <code>getActionParameter(request, response)</code>로 <code>action</code> 값을 꺼내 switch문으로 분기합니다.<br>
+            • <strong>화면 조회</strong>는 <code>forward()</code> (데이터 유지!), <strong>등록/삭제 완료 후</strong>는 <code>redirect()</code> (새로고침 중복 방지!)를 명확히 구분해야 합니다.<br>
+            • 로그인 성공 시: <code>request.getSession().setAttribute("loginUser", member);</code>
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>@WebServlet({"/gear", "/member"}) // [필수 1] 서블릿 URL 매핑
+public class GearController extends HttpServlet implements ControllerHelper {
+    private final GearService service = GearServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = getActionParameter(request, response);
+        
+        switch (action) {
+            case "index" -> redirect(request, response, "/index.jsp");
+            case "list" -> list(request, response);
+            case "detail" -> detail(request, response);   // [CRD] 상세조회
+            case "delete" -> delete(request, response);   // [CRD] 삭제
+            case "regist-form" -> forward(request, response, "/gear/regist.jsp");
+            case "login-form" -> forward(request, response, "/login-form.jsp");
+            case "logout" -> logout(request, response);
+            default -> response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404 처리
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = getActionParameter(request, response);
+        switch (action) {
+            case "regist" -> regist(request, response);
+            case "login" -> login(request, response);
+            case "delete" -> delete(request, response);
+            default -> response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    // 1. 목록 조회
+    private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List&lt;Gear&gt; gearList = service.selectAll();
+        req.setAttribute("gearList", gearList); // JSP에서 쓸 이름으로 저장
+        forward(req, resp, "/gear/list.jsp");
+    }
+
+    // 2. 상세 조회
+    private void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String code = req.getParameter("code");
+        Gear gear = service.selectByCode(code);
+        req.setAttribute("gear", gear);
+        forward(req, resp, "/gear/detail.jsp");
+    }
+
+    // 3. 제품 삭제
+    private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String code = req.getParameter("code");
+        service.deleteByCode(code);
+        redirect(req, resp, "/gear?action=list"); // 삭제 후 목록으로 리다이렉트
+    }
+
+    // 4. 제품 등록
+    private void regist(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String code = req.getParameter("code");
+        String name = req.getParameter("name");
+        int price = Integer.parseInt(req.getParameter("price"));
+        String brand = req.getParameter("brand");
+        String color = req.getParameter("color");
+        service.insert(new Gear(code, name, price, brand, color));
+        redirect(req, resp, "/gear?action=list"); // 등록 후 목록으로 리다이렉트
+    }
+
+    // 5. 로그인 (세션 & 쿠키)
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String email = req.getParameter("email");
+        String pass = req.getParameter("pass");
+        String rememberMe = req.getParameter("remember-me");
+
+        Member member = service.login(email, pass);
+        if (member != null) {
+            req.getSession().setAttribute("loginUser", member); // [세션 저장]
+            if (rememberMe != null) { // [쿠키 저장]
+                setupCookie("rememberEmail", email, 60*60*24*7, req.getContextPath(), resp);
+            } else { // [쿠키 삭제]
+                setupCookie("rememberEmail", "", 0, req.getContextPath(), resp);
+            }
+            redirect(req, resp, "/gear?action=index");
+        } else {
+            req.setAttribute("alertMsg", "로그인 실패! 이메일과 비밀번호를 확인하세요.");
+            forward(req, resp, "/login-form.jsp");
+        }
+    }
+
+    // 6. 로그아웃 (세션 파기)
+    private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.getSession().invalidate(); // [세션 무효화]
+        redirect(req, resp, "/gear?action=index");
+    }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 4. header.jsp Panel -->
+        <div id="prac-file-header" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/webapp/header.jsp</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태 (더미 링크 & 로그인 분기 없음)</span>
+          <div class="code-container">
+            <pre><code>&lt;span&gt; &lt;a href="#"&gt;홈으로&lt;/a&gt;&lt;/span&gt; | 
+&lt;span&gt; &lt;a href="#"&gt;목록 조회&lt;/a&gt;&lt;/span&gt; | 
+&lt;span&gt; &lt;a href="#"&gt;로그인&lt;/a&gt;&lt;/span&gt; | 	
+&lt;span&gt;안녕하세요. 님. &lt;/span&gt; | &lt;span&gt; &lt;a href="#"&gt;로그아웃&lt;/a&gt;&lt;/span&gt;</code></pre>
+          </div>
+
+          <div class="explain-card">
+            <strong>💡 왜 고쳐야 하는가? (초보자 3분 과외)</strong><br>
+            • 로그인 안 했을 때는 [로그인] 링크만 보여야 하고, 로그인 성공 시에는 [안녕하세요 OOO님 | 로그아웃]이 보여야 합니다.<br>
+            • JSTL의 <code>&lt;c:if test="${empty sessionScope.loginUser}"&gt;</code>와 <code>&lt;c:if test="${not empty sessionScope.loginUser}"&gt;</code>로 감싸주면 완벽히 해결됩니다.
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;style&gt; a { text-decoration: none; } &lt;/style&gt;
+
+&lt;div&gt;
+    &lt;span&gt;&lt;a href="${root}/gear?action=index"&gt;홈으로&lt;/a&gt;&lt;/span&gt; | 
+    &lt;span&gt;&lt;a href="${root}/gear?action=list"&gt;목록 조회&lt;/a&gt;&lt;/span&gt; | 
+    
+    &lt;%-- [로그인 전] loginUser 세션이 비어있을 때 --%&gt;
+    &lt;c:if test="${empty sessionScope.loginUser}"&gt;
+        &lt;span&gt;&lt;a href="${root}/gear?action=login-form"&gt;로그인&lt;/a&gt;&lt;/span&gt; |
+    &lt;/c:if&gt;
+
+    &lt;%-- [로그인 후] loginUser 세션이 존재할 때 --%&gt;
+    &lt;c:if test="${not empty sessionScope.loginUser}"&gt;
+        &lt;span&gt;안녕하세요. &lt;strong&gt;${sessionScope.loginUser.name}&lt;/strong&gt;님. &lt;/span&gt; | 
+        &lt;span&gt;&lt;a href="${root}/gear?action=logout"&gt;로그아웃&lt;/a&gt;&lt;/span&gt; |
+    &lt;/c:if&gt;
+&lt;/div&gt;
+&lt;hr /&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 5. list.jsp Panel -->
+        <div id="prac-file-list" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/webapp/gear/list.jsp</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태 (하드코딩 더미데이터)</span>
+          <div class="code-container">
+            <pre><code>&lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td&gt;더미데이터&lt;/td&gt;&lt;td&gt;더미데이터&lt;/td&gt;&lt;td&gt;더미데이터&lt;/td&gt;&lt;td&gt;더미데이터&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/tbody&gt;</code></pre>
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드 (&lt;c:forEach&gt; 및 상세/삭제 링크)</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;목록 조회 페이지&lt;/title&gt;
+    &lt;style&gt; table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px 12px; } &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="/header.jsp" %&gt;
+    &lt;h1&gt;목록 조회 페이지&lt;/h1&gt;
+
+    &lt;p&gt;
+        &lt;a href="${root}/gear?action=index"&gt;메인 화면으로&lt;/a&gt; | 
+        &lt;a href="${root}/gear?action=regist-form"&gt;등록하기&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;코드 (클릭 시 상세조회)&lt;/th&gt;
+                &lt;th&gt;제품명&lt;/th&gt;
+                &lt;th&gt;제품 가격&lt;/th&gt;
+                &lt;th&gt;제품 색&lt;/th&gt;
+                &lt;th&gt;관리&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;%-- requestScope에 담겨온 gearList를 순회 --%&gt;
+            &lt;c:forEach var="gear" items="${gearList}"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;a href="${root}/gear?action=detail&code=${gear.code}"&gt;${gear.code}&lt;/a&gt;&lt;/td&gt;
+                    &lt;td&gt;${gear.name}&lt;/td&gt;
+                    &lt;td&gt;${gear.price}&lt;/td&gt;
+                    &lt;td&gt;${gear.color}&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="${root}/gear?action=delete&code=${gear.code}" onclick="return confirm('정말 삭제하시겠습니까?');"&gt;삭제&lt;/a&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/c:forEach&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 6. regist.jsp Panel -->
+        <div id="prac-file-regist" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/webapp/gear/regist.jsp</code>
+          </div>
+
+          <span class="diff-badge-before">❌ 1. 시험지 초기 상태 (&lt;form action="#"&gt;)</span>
+          <div class="code-container">
+            <pre><code>&lt;form action="#" method="#"&gt; &lt;%-- action과 method가 비어있음 --%&gt;</code></pre>
+          </div>
+
+          <span class="diff-badge-after">✅ 2. 100점 만점 정답 코드</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;정보 등록 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="/header.jsp" %&gt;
+    &lt;h1&gt;등록 페이지&lt;/h1&gt;
+
+    &lt;%-- POST 요청으로 /gear 서블릿 호출, hidden action=regist 전송 --%&gt;
+    &lt;form action="${root}/gear" method="post"&gt;
+        &lt;input type="hidden" name="action" value="regist"&gt;
+        &lt;fieldset&gt;
+            &lt;label&gt; 제품 코드 &lt;input type="text" name="code" maxlength="15" required&gt;&lt;/label&gt;&lt;br&gt;
+            &lt;label&gt; 제품명 &lt;input type="text" name="name" required&gt;&lt;/label&gt;&lt;br&gt;
+            &lt;label&gt; 제품 가격 &lt;input type="number" name="price" required&gt;&lt;/label&gt;&lt;br&gt;
+            &lt;label&gt; 제품 브랜드 &lt;input type="text" name="brand" required&gt;&lt;/label&gt;&lt;br&gt;
+            &lt;label&gt; 제품색 
+                &lt;select name="color"&gt;
+                    &lt;option value="블랙"&gt;블랙&lt;/option&gt;
+                    &lt;option value="아이보리"&gt;아이보리&lt;/option&gt;
+                    &lt;option value="카키"&gt;카키&lt;/option&gt;
+                &lt;/select&gt;
+            &lt;/label&gt;&lt;br&gt;
+            &lt;input type="submit" value="등록"&gt;&lt;br&gt;
+            &lt;a href="${root}/gear?action=list"&gt;목록으로&lt;/a&gt;
+        &lt;/fieldset&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 7. detail.jsp Panel -->
+        <div id="prac-file-detail" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/webapp/gear/detail.jsp (신규 CRD 필수 파일)</code>
+          </div>
+
+          <div class="explain-card">
+            <strong>💡 실기 안내 공지 반영 필수 파일:</strong><br>
+            샘플에는 없었으나 11/09 실기 공지에서 <strong>"웹 CRD(등록, 목록, 상세, 삭제)"</strong>가 지정되었으므로 시험장에서 제공되거나 직접 작성해야 하는 상세조회 뷰입니다.
+          </div>
+
+          <span class="diff-badge-after">✅ 100점 만점 정답 코드</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;제품 상세 정보&lt;/title&gt;
+    &lt;style&gt; table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px 14px; } &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="/header.jsp" %&gt;
+    &lt;h1&gt;제품 상세 조회&lt;/h1&gt;
+
+    &lt;table&gt;
+        &lt;tr&gt;&lt;th&gt;제품 코드&lt;/th&gt;&lt;td&gt;${gear.code}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;th&gt;제품명&lt;/th&gt;&lt;td&gt;${gear.name}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;th&gt;가격&lt;/th&gt;&lt;td&gt;${gear.price} 원&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;th&gt;브랜드&lt;/th&gt;&lt;td&gt;${gear.brand}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;th&gt;색상&lt;/th&gt;&lt;td&gt;${gear.color}&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;p style="margin-top: 15px;"&gt;
+        &lt;a href="${root}/gear?action=list"&gt;목록으로&lt;/a&gt; | 
+        &lt;a href="${root}/gear?action=delete&code=${gear.code}" onclick="return confirm('정말 삭제하시겠습니까?');"&gt;삭제하기&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+        </div>
+
+        <!-- 8. login-form.jsp Panel -->
+        <div id="prac-file-login" class="prac-file-panel" style="display: none;">
+          <div style="margin-bottom: 0.8rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">파일 경로</span>
+            <code style="font-size: 0.9rem; color: var(--dark); font-weight: bold;">src/main/webapp/login-form.jsp</code>
+          </div>
+
+          <span class="diff-badge-after">✅ 100점 만점 정답 코드 (쿠키 ${cookie.rememberEmail.value} 바인딩)</span>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">복사</button>
+            <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;title&gt;로그인 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;%@ include file="/header.jsp"%&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;로그인 페이지&lt;/h1&gt;
+        &lt;form action="${root}/gear" method="post"&gt;
+            &lt;input type="hidden" name="action" value="login"&gt;
+            &lt;fieldset&gt;
+                &lt;div&gt;
+                    &lt;label for="email"&gt;이메일 &lt;/label&gt; 
+                    &lt;%-- 저장된 쿠키 값이 있으면 input value에 자동 출력 --%&gt;
+                    &lt;input type="email" id="email" name="email" value="${cookie.rememberEmail.value}" placeholder="email을 입력하세요" required&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for="pass"&gt;비밀번호 &lt;/label&gt;
+                    &lt;input type="password" id="pass" name="pass" required/&gt; &lt;br&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label&gt; 
+                        &lt;%-- 쿠키가 존재하면 체크박스 checked 활성화 --%&gt;
+                        &lt;input type="checkbox" name="remember-me" ${not empty cookie.rememberEmail ? 'checked' : ''}&gt; 아이디 기억하기
+                    &lt;/label&gt;
+                &lt;/div&gt;
+                &lt;input type="submit" value="로그인"&gt; &lt;br&gt;
+            &lt;/fieldset&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TAB 4: 완성본 전체 소스코드 뷰어 -->
+    <!-- ================================================================= -->
+    <div id="tab-codes" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>💻</span>
+          <span>WebTest_sample 완성본 소스코드</span>
+        </div>
+        <p style="margin-bottom: 1rem; color: var(--text-muted);">
+          실제 실행 가능한 완성 프로젝트: <code>C:\Users\SSAFY\Desktop\JSP\WebTest_sample_완성</code>
+        </p>
+
+        <h4 style="color: var(--primary); margin: 1.2rem 0 0.4rem;">📄 GearController.java</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          <pre><code>package com.ssafy.sample.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import com.ssafy.sample.model.dto.Gear;
+import com.ssafy.sample.model.dto.Member;
+import com.ssafy.sample.model.service.GearService;
+import com.ssafy.sample.model.service.GearServiceImpl;
+
+@WebServlet({"/gear", "/member"})
+public class GearController extends HttpServlet implements ControllerHelper {
+    private static final long serialVersionUID = 1L;
+    private final GearService service = GearServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = getActionParameter(request, response);
+        switch (action) {
+            case "index" -> redirect(request, response, "/index.jsp");
+            case "list" -> list(request, response);
+            case "regist-form" -> forward(request, response, "/gear/regist.jsp");
+            case "login-form" -> forward(request, response, "/login-form.jsp");
+            case "logout" -> logout(request, response);
+            default -> response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = getActionParameter(request, response);
+        switch (action) {
+            case "regist" -> regist(request, response);
+            case "login" -> login(request, response);
+            default -> response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    private void list(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List&lt;Gear&gt; gearList = service.selectAll();
+        request.setAttribute("gearList", gearList);
+        forward(request, response, "/gear/list.jsp");
+    }
+
+    private void regist(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String code = request.getParameter("code");
+        String name = request.getParameter("name");
+        int price = Integer.parseInt(request.getParameter("price"));
+        String brand = request.getParameter("brand");
+        String color = request.getParameter("color");
+        service.insert(new Gear(code, name, price, brand, color));
+        redirect(request, response, "/gear?action=list");
+    }
+
+    private void login(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String pass = request.getParameter("pass");
+        String rememberMe = request.getParameter("remember-me");
+        Member member = service.login(email, pass);
+
+        if (member != null) {
+            request.getSession().setAttribute("loginUser", member);
+            if (rememberMe != null) {
+                setupCookie("rememberEmail", email, 60 * 60 * 24 * 7, request.getContextPath(), response);
+            } else {
+                setupCookie("rememberEmail", "", 0, request.getContextPath(), response);
+            }
+            redirect(request, response, "/gear?action=index");
+        } else {
+            request.setAttribute("alertMsg", "로그인 실패! 이메일과 비밀번호를 확인하세요.");
+            forward(request, response, "/login-form.jsp");
+        }
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().invalidate();
+        redirect(request, response, "/gear?action=index");
+    }
+}</code></pre>
+        </div>
+
+        <h4 style="color: var(--primary); margin: 1.5rem 0 0.4rem;">📄 header.jsp</h4>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">복사</button>
+          <pre><code>&lt;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib prefix="c" uri="jakarta.tags.core"%&gt;
+&lt;c:set var="root" value="${pageContext.servletContext.contextPath}" /&gt;
+&lt;style&gt; a { text-decoration: none; } &lt;/style&gt;
+&lt;div&gt;
+    &lt;span&gt;&lt;a href="${root}/gear?action=index"&gt;홈으로&lt;/a&gt;&lt;/span&gt; | 
+    &lt;span&gt;&lt;a href="${root}/gear?action=list"&gt;목록 조회&lt;/a&gt;&lt;/span&gt; | 
+    &lt;c:if test="${empty sessionScope.loginUser}"&gt;
+        &lt;span&gt;&lt;a href="${root}/gear?action=login-form"&gt;로그인&lt;/a&gt;&lt;/span&gt; |
+    &lt;/c:if&gt;
+    &lt;c:if test="${not empty sessionScope.loginUser}"&gt;
+        &lt;span&gt;안녕하세요. ${sessionScope.loginUser.name}님. &lt;/span&gt; | 
+        &lt;span&gt;&lt;a href="${root}/gear?action=logout"&gt;로그아웃&lt;/a&gt;&lt;/span&gt; |
+    &lt;/c:if&gt;
+&lt;/div&gt;
+&lt;hr /&gt;
+&lt;script type="text/javascript"&gt;
+    const alertMsg = `${param.alertMsg}` || `${alertMsg}`; 
+    if (alertMsg) alert(alertMsg);
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.9rem;">
+    SSAFY Web BackEnd & DB Test Practice System &copy; 2026
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT: 시험 데이터 (총 32문제) 및 자동 채점 로직 -->
+  <!-- ================================================================= -->
+  <script src="mock_exams.js"></script>
+  <script>
+    // 32문제 전수 데이터베이스
+    const quizData = [
+      // --- 객관식 21문제 (1~21) ---
+      {
+        id: 1, type: "mcq", tag: "Servlet 아키텍처",
+        question: "서블릿(Servlet) 생명주기 메서드 중, 서블릿 인스턴스가 최초 생성된 후 오직 1회만 호출되어 리소스 초기화 작업을 수행하는 메서드는?",
+        options: ["service()", "init()", "doGet()", "destroy()"],
+        answer: 1,
+        exp: "init() 메서드는 서블릿이 컨테이너에 의해 처음 로드되어 메모리에 생성될 때 단 1번만 호출됩니다. 요청마다 호출되는 것은 service()입니다."
+      },
+      {
+        id: 2, type: "mcq", tag: "Servlet 동시성",
+        question: "서블릿 컨테이너의 싱글톤 모델과 멀티스레드 동시성에 대한 설명으로 가장 올바른 것은?",
+        options: [
+          "서블릿 인스턴스는 매 HTTP 요청마다 새로 생성되므로 멤버 변수는 스레드 안전하다.",
+          "서블릿은 싱글톤으로 단 1개의 인스턴스만 존재하며, 요청마다 별도의 스레드가 생성되므로 멤버 변수 공유 시 동시성 문제가 발생할 수 있다.",
+          "서블릿은 단일 스레드로만 동작하므로 여러 사용자가 동시 접속해도 대기 큐에서 순차 실행된다.",
+          "지역 변수(Local Variable)는 여러 스레드가 공유하므로 동기화 블록이 필수적이다."
+        ],
+        answer: 1,
+        exp: "서블릿은 기본적으로 1개의 인스턴스만 생성되는 싱글톤 구조입니다. 사용자 요청마다 새 Thread가 할당되어 실행되므로, 인스턴스 멤버 변수를 상태 저장용으로 쓰면 여러 스레드가 동시에 접근하여 데이터가 오염될 수 있습니다."
+      },
+      {
+        id: 3, type: "mcq", tag: "URL 매핑 규칙",
+        question: "서블릿 컨테이너에서 클라이언트의 URL 요청을 매핑할 때 적용되는 우선순위 규칙으로 가장 우선순위가 높은 것은?",
+        options: [
+          "확장자 매핑 (*.do, *.action)",
+          "디렉터리 경로 매핑 (/board/*)",
+          "기본 서블릿 매핑 (/)",
+          "정확한 경로 매핑 (/board/list)"
+        ],
+        answer: 3,
+        exp: "URL 매핑 우선순위: 1) 정확한 일치 (/board/list) > 2) 디렉터리 경로 (/board/*) > 3) 확장자 매핑 (*.do) > 4) 기본 서블릿 (/)"
+      },
+      {
+        id: 4, type: "mcq", tag: "Filter 아키텍처",
+        question: "서블릿 필터(Filter) 구현 시 다음 필터로 요청/응답을 전달하거나, 마지막 필터인 경우 목적지 서블릿을 호출하기 위해 사용하는 메서드는?",
+        options: ["filter.proceed()", "chain.doFilter(request, response)", "dispatcher.forward()", "filter.execute()"],
+        answer: 1,
+        exp: "FilterChain 인터페이스의 chain.doFilter(request, response)를 호출해야 필터 체인의 다음 필터나 최종 목적지 서블릿으로 요청이 전달됩니다."
+      },
+      {
+        id: 5, type: "mcq", tag: "Filter DispatcherType",
+        question: "서블릿 필터를 등록할 때, RequestDispatcher의 forward()를 통해 포워드되어 들어오는 내부 요청에 대해서만 필터가 동작하도록 설정할 DispatcherType은?",
+        options: ["REQUEST", "INCLUDE", "FORWARD", "ASYNC"],
+        answer: 2,
+        exp: "기본 DispatcherType은 REQUEST(일반 클라이언트 요청)입니다. forward로 내부 이동한 요청에 필터를 적용하려면 FORWARD 타입을 명시해야 합니다."
+      },
+      {
+        id: 6, type: "mcq", tag: "Front Controller",
+        question: "웹 애플리케이션 아키텍처에서 Front Controller 패턴(예: GearController)을 도입하는 주된 목적으로 가장 적절한 것은?",
+        options: [
+          "데이터베이스 커넥션 풀을 직접 생성하고 트랜잭션을 전담하기 위해",
+          "클라이언트의 모든 요청을 단일 입구 서블릿에서 일괄 접수하여 공통 작업(한글 인코딩, 세션 체크, 예외 처리 등)을 일원화하고 유지보수성을 높이기 위해",
+          "HTML 화면 렌더링 속도를 브라우저 엔진보다 빠르게 가속하기 위해",
+          "JSP 파일 없이 자바 코드만으로 화면 레이아웃을 작성하기 위해"
+        ],
+        answer: 1,
+        exp: "Front Controller 패턴은 모든 클라이언트 요청을 단 하나의 대표 서블릿이 접수하여 공통 사전/사후 처리를 집중시키고, 각 세부 요청은 비즈니스 핸들러로 위임하는 패턴입니다."
+      },
+      {
+        id: 7, type: "mcq", tag: "web.xml 에러 매핑",
+        question: "서버에서 404 상태 코드(Not Found)가 발생했을 때 지정한 /error/404.jsp 페이지를 사용자에게 보여주기 위한 web.xml 태그 구조로 옳은 것은?",
+        options: [
+          "<exception-type><code 404>/error/404.jsp</code 404></exception-type>",
+          "<error-page><error-code>404</error-code><location>/error/404.jsp</location></error-page>",
+          "<not-found-page><status>404</status><page>/error/404.jsp</page></not-found-page>",
+          "<page-error code='404' url='/error/404.jsp' />"
+        ],
+        answer: 1,
+        exp: "web.xml에서는 <error-page> 태그 안에 <error-code>와 <location> 태그를 사용하여 상태 코드별 맞춤 에러 페이지를 매핑합니다."
+      },
+      {
+        id: 8, type: "mcq", tag: "JSP 변환 구조",
+        question: "JSP 파일이 서블릿(.java) 소스코드로 변환될 때, 스크립트릿 <% int sum = 0; %> 안에 작성된 자바 코드가 위치하게 되는 자리는?",
+        options: [
+          "서블릿 클래스의 static 초기화 블록",
+          "서블릿 클래스의 멤버 변수(Field) 영역",
+          "_jspService() 메서드의 지역 내부",
+          "서블릿의 init() 메서드 내부"
+        ],
+        answer: 2,
+        exp: "스크립트릿(<% %>)과 표현식(<%= %>)은 _jspService() 메서드 내부에 지역변수 및 실행문으로 변환됩니다. 반면 선언문(<%! %>)은 클래스 멤버 변수/메서드로 변환됩니다."
+      },
+      {
+        id: 9, type: "mcq", tag: "include 지시자 vs 액션",
+        question: "<%@ include file=\"header.jsp\" %> 지시자와 <jsp:include page=\"header.jsp\" /> 표준 액션 태그의 차이점으로 옳은 것은?",
+        options: [
+          "지시자는 실행 시점(런타임)에 동적으로 결과가 합쳐지고, 표준 액션은 변환 시점(컴파일)에 정적으로 합쳐진다.",
+          "지시자는 변환 시점에 소스 코드가 정적으로 하나로 합쳐져 단일 서블릿으로 컴파일되고, 표준 액션은 런타임에 동적으로 요청이 위임되어 결과 HTML만 포함된다.",
+          "지시자는 파라미터(<jsp:param>)를 전달할 수 있지만 표준 액션은 전달할 수 없다.",
+          "두 방식은 문법만 다를 뿐 완벽하게 동일한 내부 메커니즘으로 동작한다."
+        ],
+        answer: 1,
+        exp: "include 지시자는 텍스트 그대로 파일이 합쳐져 하나의 큰 서블릿으로 컴파일(정적 include)되므로 변수가 공유됩니다. <jsp:include>는 실행 시점에 해당 페이지를 별도로 실행한 뒤 응답 내용만 가져오는 동적 include입니다."
+      },
+      {
+        id: 10, type: "mcq", tag: "4대 Scope 우선순위",
+        question: "JSP/EL에서 스코프 명시 없이 ${user}로 변수를 조회할 때, 컨테이너가 탐색하는 영역(Scope)의 우선순위로 올바른 것은?",
+        options: [
+          "application ➔ session ➔ request ➔ page",
+          "page ➔ request ➔ session ➔ application",
+          "request ➔ page ➔ session ➔ application",
+          "session ➔ request ➔ page ➔ application"
+        ],
+        answer: 1,
+        exp: "EL은 좁은 유효범위에서 넓은 범위 순으로 탐색합니다: pageScope ➔ requestScope ➔ sessionScope ➔ applicationScope"
+      },
+      {
+        id: 11, type: "mcq", tag: "JSTL core 조건문",
+        question: "JSTL Core 라이브러리에서 if - else if - else와 같은 다중 조건 분기 처리를 구현할 때 사용하는 태그 조합은?",
+        options: [
+          "<c:if> - <c:elseif> - <c:else>",
+          "<c:switch> - <c:case> - <c:default>",
+          "<c:choose> - <c:when> - <c:otherwise>",
+          "<c:branch> - <c:condition> - <c:fallback>"
+        ],
+        answer: 2,
+        exp: "JSTL에는 <c:else>나 <c:elseif>가 없습니다! 다중 분기는 반드시 <c:choose> 안에 1개 이상의 <c:when test=\"...\">과 마지막 <c:otherwise>를 조합하여 작성합니다."
+      },
+      {
+        id: 12, type: "mcq", tag: "세션 식별 쿠키",
+        question: "클라이언트가 서블릿 웹 애플리케이션에 처음 접속하여 세션(HttpSession)이 생성될 때, 서버가 브라우저를 식별하기 위해 클라이언트에 발급하는 기본 쿠키의 이름은?",
+        options: ["SESSION_ID", "JSESSIONID", "SSAFY_AUTH", "AUTH_TOKEN"],
+        answer: 1,
+        exp: "자바 서블릿 컨테이너(Tomcat)는 세션을 추적하기 위해 기본적으로 'JSESSIONID'라는 이름의 쿠키를 클라이언트에 응답 헤더로 전달합니다."
+      },
+      {
+        id: 13, type: "mcq", tag: "DDL/DML 비교",
+        question: "테이블의 구조와 정의(컬럼, 인덱스 등)는 그대로 유지하면서 모든 데이터 행을 고속으로 삭제하고, 트랜잭션 로그를 최소화하여 롤백(Rollback)이 불가능한 DDL 명령어는?",
+        options: ["DELETE FROM table_name;", "DROP TABLE table_name;", "TRUNCATE TABLE table_name;", "ALTER TABLE table_name PURGE;"],
+        answer: 2,
+        exp: "TRUNCATE는 DDL 명령어로 테이블 스토리지 자체를 초기화하여 모든 행을 가장 빠르게 삭제합니다. DML인 DELETE와 달리 Undo 로그를 남기지 않으므로 Rollback이 불가능합니다."
+      },
+      {
+        id: 14, type: "mcq", tag: "삼치 논리와 NULL",
+        question: "SQL 삼치 논리(True, False, Unknown)에서 다음 조건식 `NULL = NULL`을 평가한 결과는?",
+        options: ["True", "False", "Unknown", "Syntax Error"],
+        answer: 2,
+        exp: "SQL에서 NULL은 '알 수 없음(Unknown)' 또는 '값이 존재하지 않음'을 의미하므로, 두 NULL의 상등 비교(NULL = NULL)는 참(True)이 아니라 Unknown(알 수 없음)으로 평가됩니다."
+      },
+      {
+        id: 15, type: "mcq", tag: "LIMIT 페이징",
+        question: "게시판 목록에서 한 페이지당 10개씩 글을 출력하고자 할 때, 3번째 페이지(21번째 행부터 30번째 행)를 조회하기 위한 올바른 MySQL LIMIT 구문은?",
+        options: ["LIMIT 3, 10", "LIMIT 10, 3", "LIMIT 20, 10", "LIMIT 30, 10"],
+        answer: 2,
+        exp: "MySQL의 `LIMIT offset, count`에서 offset은 0부터 시작합니다. 3번째 페이지는 앞의 20개를 건너뛰어야 하므로 offset이 20, 개수가 10입니다 (`LIMIT 20, 10` 또는 `LIMIT 10 OFFSET 20`)."
+      },
+      {
+        id: 16, type: "mcq", tag: "SQL 문자열 함수",
+        question: "MySQL에서 여러 컬럼의 문자열 값이나 리터럴을 하나로 결합할 때 사용하는 표준 함수는?",
+        options: ["CONCAT('A', 'B', 'C')", "APPEND('A', 'B', 'C')", "JOIN_STR('A', 'B', 'C')", "MERGE('A', 'B', 'C')"],
+        answer: 0,
+        exp: "MySQL에서는 CONCAT(str1, str2, ...) 함수를 사용하여 문자열을 결합합니다. (오라클에서는 || 연산자도 지원)"
+      },
+      {
+        id: 17, type: "mcq", tag: "트랜잭션 부분 롤백",
+        question: "트랜잭션 처리 중 전체 롤백 대신 작업 중간 지점을 지정하여 해당 지점 이후의 연산만 취소하고 이전 작업은 유지할 때 사용하는 명령 조합은?",
+        options: [
+          "CHECKPOINT & RESTORE",
+          "SAVEPOINT & ROLLBACK TO SAVEPOINT",
+          "BOOKMARK & ROLLBACK TO BOOKMARK",
+          "SNAPSHOT & REVERT SNAPSHOT"
+        ],
+        answer: 1,
+        exp: "트랜잭션 내에서 `SAVEPOINT 포인트명;`으로 저장점을 생성하고, 에러 발생 시 `ROLLBACK TO SAVEPOINT 포인트명;`을 실행하면 해당 지점 이후의 작업만 롤백됩니다."
+      },
+      {
+        id: 18, type: "mcq", tag: "다중 행 서브쿼리",
+        question: "다중 행 서브쿼리 연산자 중, 서브쿼리가 반환한 여러 결과 값 중 적어도 하나라도 만족하면 참(True)이 되는 연산자로 옳은 것은?",
+        options: ["ALL", "ANY (또는 SOME)", "NOT IN", "EXISTS ALL"],
+        answer: 1,
+        exp: "ANY(또는 SOME)은 서브쿼리 반환 값 중 최소 1개 이상 조건을 만족하면 참이 됩니다. 반면 ALL은 반환된 모든 값에 대해 조건을 만족해야 참입니다."
+      },
+      {
+        id: 19, type: "mcq", tag: "상호 연관 서브쿼리",
+        question: "메인 쿼리의 컬럼을 서브쿼리가 참조하여 실행되며, 서브쿼리의 조건을 만족하는 행이 적어도 하나 존재하는지 여부만 빠르게 판별할 때 가장 효율적인 연산자는?",
+        options: ["IN", "EXISTS", "BETWEEN", "LIKE"],
+        answer: 1,
+        exp: "EXISTS 연산자는 상호 연관 서브쿼리에서 조건을 만족하는 첫 번째 행을 찾는 즉시 스캔을 중단하고 True를 반환하므로 성능상 매우 유리합니다."
+      },
+      {
+        id: 20, type: "mcq", tag: "뷰(View)의 특성",
+        question: "관계형 데이터베이스에서 뷰(View)에 대한 설명으로 가장 옳지 않은 것은?",
+        options: [
+          "뷰는 복잡한 SQL 쿼리를 단순화하고 보안상 특정 컬럼만 사용자에게 노출할 때 유용하다.",
+          "뷰는 실제 물리적인 테이블처럼 디스크에 모든 행 데이터를 독립적으로 저장한다.",
+          "집계 함수(SUM, COUNT 등)나 GROUP BY, DISTINCT가 포함된 뷰는 DML(INSERT, UPDATE 등) 수행이 제한된다.",
+          "뷰는 쿼리 정의문(SELECT 문)만 딕셔너리에 저장되는 가상 테이블(Virtual Table)이다."
+        ],
+        answer: 1,
+        exp: "뷰(View)는 물리적인 데이터를 디스크에 저장하지 않는 가상 테이블(Virtual Table)입니다. 뷰를 조회하면 저장된 SELECT 쿼리가 내부적으로 실행됩니다."
+      },
+      {
+        id: 21, type: "mcq", tag: "인덱스 구조",
+        question: "MySQL InnoDB 스토리지 엔진에서 기본키(PK)를 기준으로 테이블의 실제 물리적 데이터 행들이 리프 노드에 정렬되어 직접 저장되는 인덱스 유형은?",
+        options: ["Secondary Index (보조 인덱스)", "Clustered Index (클러스터형 인덱스)", "Composite Index (복합 인덱스)", "Hash Index (해시 인덱스)"],
+        answer: 1,
+        exp: "Clustered Index는 PK를 기준으로 테이블 데이터 자체를 B+Tree 리프 노드에 정렬하여 저장하는 인덱스 구조로, 테이블당 오직 1개만 존재할 수 있습니다."
+      },
+
+      // --- 주관식 단답형 9문제 (22~30) ---
+      {
+        id: 22, type: "short", tag: "외래키 삭제 DDL",
+        question: "orders 테이블에 생성되어 있는 외래키(FK) 제약조건 `fk_user_id`를 삭제하기 위한 올바른 MySQL DDL 문장을 작성하시오.\n(대소문자 무관)",
+        answer: "ALTER TABLE orders DROP FOREIGN KEY fk_user_id;",
+        acceptedAnswers: [
+          "ALTER TABLE orders DROP FOREIGN KEY fk_user_id;",
+          "ALTER TABLE orders DROP FOREIGN KEY fk_user_id",
+          "alter table orders drop foreign key fk_user_id;",
+          "alter table orders drop foreign key fk_user_id"
+        ],
+        exp: "MySQL에서 외래키 제약조건 삭제는 `ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건명;` 문법을 사용합니다."
+      },
+      {
+        id: 23, type: "short", tag: "세션 무효화",
+        question: "사용자가 로그아웃을 요청했을 때, 현재 서버에 생성된 HttpSession을 즉시 무효화하고 바인딩된 모든 속성 객체를 제거하는 HttpSession의 메서드명은?\n(괄호 포함 또는 제외 모두 정답 인정)",
+        answer: "invalidate()",
+        acceptedAnswers: ["invalidate()", "invalidate", "session.invalidate()", "session.invalidate"],
+        exp: "request.getSession().invalidate(); 를 호출하면 현재 세션이 완전히 무효화됩니다."
+      },
+      {
+        id: 24, type: "short", tag: "정규화 단계",
+        question: "제1정규형(1NF)을 만족하고, 기본키의 진부분집합이 기본키가 아닌 일반 컬럼을 결정하는 '부분 함수적 종속'을 제거하여 '완전 함수적 종속'을 만족시키는 정규화 단계는?\n(예: 제N정규형 또는 NF)",
+        answer: "제2정규형 (2NF)",
+        acceptedAnswers: ["제2정규형", "2NF", "2정규형", "제 2 정규형", "2nf"],
+        exp: "제2정규형(2NF)은 복합 기본키의 일부분에 종속되는 부분 함수적 종속을 제거하여 완전 함수 종속을 달성하는 단계입니다."
+      },
+      {
+        id: 25, type: "short", tag: "정규화 단계",
+        question: "제3정규형(3NF)을 만족하면서, 릴레이션에 존재하는 모든 결정자가 반드시 '후보키(Candidate Key)'여야 한다는 제약조건을 만족하는 강화된 정규형은?",
+        answer: "BCNF (보이스-코드 정규형)",
+        acceptedAnswers: ["BCNF", "보이스코드 정규형", "보이스-코드 정규형", "보이스코드정규형", "bcnf"],
+        exp: "BCNF(Boyce-Codd Normal Form)는 3정규형을 보완한 형태로 '모든 결정자가 후보키'여야 함을 만족하는 정규형입니다."
+      },
+      {
+        id: 26, type: "short", tag: "집합 연산자",
+        question: "MySQL 8.0.31 이상에서 지원하는 집합 연산자로, 첫 번째 SELECT 결과 집합에서 두 번째 SELECT 결과 집합을 뺀 '차집합'을 구하는 표준 SQL 키워드는?",
+        answer: "EXCEPT",
+        acceptedAnswers: ["EXCEPT", "except", "MINUS"],
+        exp: "표준 SQL 및 최신 MySQL에서 차집합 연산자는 `EXCEPT`입니다. (Oracle에서는 `MINUS` 사용)"
+      },
+      {
+        id: 27, type: "short", tag: "인덱스 스캔",
+        question: "인덱스를 전혀 타지 않고 테이블에 저장된 첫 번째 블록부터 마지막 블록까지 모든 데이터를 순차적으로 읽는 검색 방식의 명칭은?\n(영문 풀네임 또는 약어, 한글 모두 인정)",
+        answer: "Full Table Scan (FTS / 테이블 풀 스캔)",
+        acceptedAnswers: ["Full Table Scan", "FTS", "테이블 풀 스캔", "풀 테이블 스캔", "full table scan", "fts"],
+        exp: "조건절 컬럼에 인덱스가 없거나, 읽어야 할 데이터가 전체 테이블의 약 20~25% 이상인 경우 옵티마이저는 Full Table Scan(테이블 전체 스캔)을 수행합니다."
+      },
+      {
+        id: 28, type: "short", tag: "서브쿼리 유형",
+        question: "SELECT 절에 위치하며, 단 하나의 행과 단 하나의 열(단일 값)만을 반드시 반환해야 하는 서브쿼리의 명칭은?",
+        answer: "스칼라 서브쿼리 (Scalar Subquery)",
+        acceptedAnswers: ["스칼라 서브쿼리", "스칼라", "Scalar Subquery", "scalar subquery", "스칼라서브쿼리"],
+        exp: "SELECT 절에 들어가는 서브쿼리를 '스칼라 서브쿼리(Scalar Subquery)'라고 부르며, 2건 이상의 행이 반환되면 런타임 에러가 발생합니다."
+      },
+      {
+        id: 29, type: "short", tag: "NULL 연산자",
+        question: "SQL에서 특정 컬럼의 값이 NULL인지 검사하기 위해 WHERE 절에 사용하는 올바른 비교 연산자는?\n(예: price ________)",
+        answer: "IS NULL",
+        acceptedAnswers: ["IS NULL", "is null", "ISNULL"],
+        exp: "NULL은 값(Value)이 아니므로 `= NULL`로 비교할 수 없고, 반드시 `IS NULL` 연산자를 사용해야 합니다."
+      },
+      {
+        id: 30, type: "short", tag: "쿠키 수명 설정",
+        question: "서블릿 Cookie 객체에 대해 쿠키의 유효 생존 시간을 초(second) 단위로 설정하는 Cookie 클래스의 메서드명은?",
+        answer: "setMaxAge()",
+        acceptedAnswers: ["setMaxAge()", "setMaxAge", "cookie.setMaxAge()", "setmaxage"],
+        exp: "cookie.setMaxAge(60 * 60 * 24); 처럼 초 단위로 수명을 지정합니다. 0을 넣으면 브라우저에서 쿠키가 즉시 삭제됩니다."
+      },
+
+      // --- 주관식 서술형 2문제 (31~32) ---
+      {
+        id: 31, type: "essay", tag: "서술형 1 (forward vs sendRedirect)",
+        question: "forward 방식과 sendRedirect 방식의 차이점을 다음 3가지 기준에 따라 명확히 비교하여 서술하시오.\n① 클라이언트-서버 간 요청/응답 왕복 횟수\n② 브라우저 주소창의 URL 변경 여부\n③ HttpServletRequest 객체의 속성(Attribute) 데이터 공유 여부",
+        keywords: ["1회", "2회", "URL", "변경", "공유", "request", "유지"],
+        modelAnswer: "1) 요청/응답 왕복 횟수: forward는 서버 내부에서 이동하므로 요청/응답이 1회 발생하지만, sendRedirect는 302 응답 후 브라우저가 새 주소로 재요청하므로 2회 발생합니다.\n2) URL 변경 여부: forward는 서버 내부 제어권 위임이므로 브라우저 URL이 변경되지 않고 최초 요청 URL이 유지되며, sendRedirect는 브라우저가 새 경로로 다시 요청하므로 URL이 변경됩니다.\n3) request 속성 공유 여부: forward는 최초 요청의 request 객체가 유지되므로 request.setAttribute()로 저장한 데이터를 대상 JSP에서 그대로 공유할 수 있지만, sendRedirect는 새 요청이 발생하여 새로운 request 객체가 생성되므로 기존 request 속성을 공유할 수 없습니다.",
+        exp: "과목평가 단골 서술형 1순위 문제입니다. 3가지 항목(왕복 횟수, URL 변경, request 속성 공유)이 빠짐없이 명시되어야 만점을 받습니다."
+      },
+      {
+        id: 32, type: "essay", tag: "서술형 2 (WHERE vs HAVING)",
+        question: "SQL에서 WHERE 절과 HAVING 절의 차이점을 다음 2가지 기준에 따라 명확히 비교하여 서술하시오.\n① 조건이 적용되는 시점 (그룹화 전/후)\n② 집계 함수(COUNT, SUM, AVG 등) 사용 가능 여부",
+        keywords: ["그룹화 전", "그룹화 후", "집계 함수", "사용 불가", "사용 가능"],
+        modelAnswer: "1) 조건 적용 시점: WHERE 절은 GROUP BY에 의한 그룹화가 수행되기 전의 개별 행(Row)에 대해 조건을 검사하여 필터링하는 반면, HAVING 절은 GROUP BY 그룹화가 완료된 후 생성된 집계 그룹에 대해 조건을 검사하여 필터링합니다.\n2) 집계 함수 사용 가능 여부: WHERE 절은 개별 행 단위로 평가되므로 COUNT(), SUM(), AVG() 등의 집계 함수를 조건식에 직접 사용할 수 없습니다. 반면 HAVING 절은 그룹화 집계 결과를 검사하므로 집계 함수를 조건식에 직접 사용할 수 있습니다.",
+        exp: "과목평가 단골 서술형 2순위 문제입니다. 그룹화 전(WHERE) vs 그룹화 후(HAVING), 집계함수 불가(WHERE) vs 사용가능(HAVING)의 2대 대조 축을 명확히 진술해야 합니다."
+      }
+    ];
+
+    // 상태 저장 변수
+    let currentRound = 1;
+    let currentFilter = 'all';
+    let userAnswers = {};
+    let timerSeconds = 60 * 60; // 60분
+    let timerInterval = null;
+
+    function getCurrentQuestions() {
+      if (typeof ALL_MOCK_EXAMS !== 'undefined' && ALL_MOCK_EXAMS[currentRound]) {
+        return ALL_MOCK_EXAMS[currentRound].questions;
+      }
+      return quizData; // fallback
+    }
+
+    function renderRoundButtons() {
+      const container = document.getElementById('round-btn-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      for (let r = 1; r <= 10; r++) {
+        const btn = document.createElement('button');
+        btn.className = `round-btn ${r === currentRound ? 'active' : ''}`;
+        btn.innerText = `제${r}회`;
+        btn.onclick = () => switchRound(r);
+        container.appendChild(btn);
+      }
+    }
+
+    function switchPracFile(fileKey, btn) {
+      document.querySelectorAll('.file-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.prac-file-panel').forEach(p => p.style.display = 'none');
+      btn.classList.add('active');
+      const panel = document.getElementById('prac-file-' + fileKey);
+      if (panel) panel.style.display = 'block';
+    }
+
+    function switchRound(roundNum) {
+      currentRound = roundNum;
+      userAnswers = {};
+      
+      // Update round buttons UI
+      document.querySelectorAll('.round-btn').forEach((b, idx) => {
+        if (idx + 1 === roundNum) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+
+      // Update titles
+      const roundData = typeof ALL_MOCK_EXAMS !== 'undefined' ? ALL_MOCK_EXAMS[roundNum] : null;
+      const titleText = roundData ? roundData.title : `제${roundNum}회 과목평가 실전 모의테스트`;
+      const currentTitleEl = document.getElementById('current-round-title');
+      const headingEl = document.getElementById('exam-display-heading');
+      if (currentTitleEl) currentTitleEl.innerText = titleText;
+      if (headingEl) headingEl.innerText = `📝 ${titleText}`;
+
+      // Reset Result Dashboard
+      const dash = document.getElementById('result-dashboard');
+      if (dash) dash.classList.remove('show');
+
+      // Reset Timer
+      clearInterval(timerInterval);
+      timerSeconds = 60 * 60;
+      startTimer();
+
+      // Render Questions
+      renderQuizList(currentFilter);
+    }
+
+    // 탭 전환
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    // 퀴즈 렌더링
+    function renderQuizList(filter = 'all') {
+      currentFilter = filter;
+      const container = document.getElementById('quiz-list-container');
+      container.innerHTML = '';
+      const questions = getCurrentQuestions();
+
+      questions.forEach((q, idx) => {
+        if (filter !== 'all' && q.type !== filter) return;
+
+        const card = document.createElement('div');
+        card.className = `quiz-card type-${q.type}`;
+        card.id = `card-q-${q.id}`;
+
+        let typeTag = q.type === 'mcq' ? '<span class="quiz-tag tag-mcq">객관식 (2.5점)</span>' :
+                      q.type === 'short' ? '<span class="quiz-tag tag-short">단답형 (3.0점)</span>' :
+                      '<span class="quiz-tag tag-essay">서술형 (10.25점)</span>';
+
+        let bodyHtml = '';
+        if (q.type === 'mcq') {
+          bodyHtml = `
+            <div class="options-list">
+              ${q.options.map((opt, optIdx) => `
+                <label class="option-item" id="opt-${q.id}-${optIdx}">
+                  <input type="radio" name="q-${q.id}" value="${optIdx}" onchange="selectOption(${q.id}, ${optIdx})">
+                  <span>${optIdx + 1}. ${opt}</span>
+                </label>
+              `).join('')}
+            </div>
+          `;
+        } else if (q.type === 'short') {
+          bodyHtml = `
+            <div class="short-input-box">
+              <input type="text" class="short-input" id="input-q-${q.id}" placeholder="정답을 입력하세요..." oninput="recordShort(${q.id}, this.value)">
+            </div>
+          `;
+        } else if (q.type === 'essay') {
+          bodyHtml = `
+            <textarea class="essay-textarea" id="input-q-${q.id}" placeholder="서술형 답안을 3가지 기준에 맞추어 구체적으로 작성하세요..." oninput="recordEssay(${q.id}, this.value)"></textarea>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="quiz-meta">
+            <span class="quiz-num">Q${q.id}. [${q.tag}]</span>
+            ${typeTag}
+          </div>
+          <div class="quiz-question">${q.question}</div>
+          ${bodyHtml}
+          <div class="explanation-box" id="exp-q-${q.id}">
+            <strong>💡 정답 및 해설:</strong><br>
+            ${q.type === 'essay' ? `<strong>[모범 답안]</strong><br><span style="white-space:pre-line">${q.modelAnswer}</span><br><br>` : ''}
+            ${q.type === 'short' ? `<strong>[표준 정답]</strong> <code>${q.answer}</code><br><br>` : ''}
+            <span>${q.exp}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qid, optIdx) {
+      userAnswers[qid] = optIdx;
+      const opts = document.querySelectorAll(`[id^="opt-${qid}-"]`);
+      opts.forEach((el, idx) => {
+        if (idx === optIdx) el.classList.add('selected');
+        else el.classList.remove('selected');
+      });
+    }
+
+    function recordShort(qid, val) { userAnswers[qid] = val.trim(); }
+    function recordEssay(qid, val) { userAnswers[qid] = val.trim(); }
+
+    function filterQuiz(filterType, pill) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      renderQuizList(filterType);
+    }
+
+    // 타이머
+    function startTimer() {
+      const timerEl = document.getElementById('exam-timer');
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert('시험 시간이 종료되었습니다! 자동으로 제출됩니다.');
+          submitExam();
+          return;
+        }
+        timerSeconds--;
+        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+        const secs = String(timerSeconds % 60).padStart(2, '0');
+        timerEl.innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    // 답안 제출 및 자동 채점
+    function submitExam() {
+      clearInterval(timerInterval);
+      let mcqCorrect = 0;
+      let shortCorrect = 0;
+      let essayScore = 0;
+      const questions = getCurrentQuestions();
+
+      questions.forEach(q => {
+        const expBox = document.getElementById(`exp-q-${q.id}`);
+        if (expBox) expBox.classList.add('show');
+
+        if (q.type === 'mcq') {
+          const userChoice = userAnswers[q.id];
+          const correctOpt = document.getElementById(`opt-${q.id}-${q.answer}`);
+          if (correctOpt) correctOpt.classList.add('correct');
+
+          if (userChoice !== undefined) {
+            if (userChoice === q.answer) {
+              mcqCorrect++;
+            } else {
+              const wrongOpt = document.getElementById(`opt-${q.id}-${userChoice}`);
+              if (wrongOpt) wrongOpt.classList.add('incorrect');
+            }
+          }
+        } else if (q.type === 'short') {
+          const userText = (userAnswers[q.id] || '').toLowerCase().replace(/\s+/g, '');
+          const isCorrect = q.acceptedAnswers.some(ans => ans.toLowerCase().replace(/\s+/g, '') === userText);
+          const inputEl = document.getElementById(`input-q-${q.id}`);
+          if (isCorrect) {
+            shortCorrect++;
+            if (inputEl) { inputEl.style.borderColor = '#16a34a'; inputEl.style.background = '#dcfce7'; }
+          } else {
+            if (inputEl) { inputEl.style.borderColor = '#dc2626'; inputEl.style.background = '#fee2e2'; }
+          }
+        } else if (q.type === 'essay') {
+          const userText = userAnswers[q.id] || '';
+          let matchCount = 0;
+          q.keywords.forEach(kw => {
+            if (userText.includes(kw)) matchCount++;
+          });
+          const scorePart = (matchCount / q.keywords.length) * 10.25;
+          essayScore += scorePart;
+          const textEl = document.getElementById(`input-q-${q.id}`);
+          if (textEl) {
+            if (scorePart >= 7.0) textEl.style.borderColor = '#16a34a';
+            else textEl.style.borderColor = '#d97706';
+          }
+        }
+      });
+
+      const totalScore = (mcqCorrect * 2.5) + (shortCorrect * 3.0) + essayScore;
+      const roundedTotal = Math.round(totalScore * 10) / 10;
+
+      // 성적표 업데이트
+      const dash = document.getElementById('result-dashboard');
+      dash.classList.add('show');
+      document.getElementById('final-score-display').innerText = `${roundedTotal} / 100.0 점`;
+      document.getElementById('mcq-score-stat').innerText = `${mcqCorrect} / 21 (${mcqCorrect * 2.5}점)`;
+      document.getElementById('short-score-stat').innerText = `${shortCorrect} / 9 (${shortCorrect * 3.0}점)`;
+      document.getElementById('essay-score-stat').innerText = `${Math.round(essayScore*10)/10} / 20.5점`;
+
+      let feedback = '';
+      if (roundedTotal >= 90) feedback = "🎉 대단합니다! 과목평가 만점 통과가 확실시되는 수준입니다!";
+      else if (roundedTotal >= 70) feedback = "👍 우수한 성적입니다! 틀린 단답형과 서술형 키워드를 오답노트로 복습하세요.";
+      else feedback = "⚠️ 보완이 필요합니다. 7대 요약집과 오답 해설을 꼼꼼히 정독한 후 재응시를 권장합니다.";
+      document.getElementById('final-feedback').innerText = feedback;
+
+      dash.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToReview() {
+      const firstQuiz = document.getElementById('card-q-1');
+      if (firstQuiz) firstQuiz.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleAnswer(id) {
+      document.getElementById(id).classList.toggle('show');
+    }
+
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = "복사됨! ✓";
+        btn.style.background = "#16a34a";
+        setTimeout(() => { btn.innerText = orig; btn.style.background = ""; }, 1500);
+      });
+    }
+
+    // 초기화
+    window.onload = function() {
+      renderRoundButtons();
+      renderQuizList('all');
+      startTimer();
+    };
+  </script>
+</body>
+</html>
