@@ -8,12 +8,40 @@
 
 현재 로컬 웹 서버(포트 8085)가 백그라운드로 실행 중이며, 브라우저를 통해 실전 모의고사와 실습 가이드를 즉시 이용하실 수 있습니다.
 
-- **접속 URL**: [http://localhost:8085/WebTest_시험대비_학습웹.html](http://localhost:8085/WebTest_시험대비_학습웹.html)
+- **접속 URL**: [http://localhost:8085/WebTest_시험대비_학습웹.html](http://localhost:8085/WebTest_시험대비_학습웹.html) 또는 [http://localhost:8085/index.html](http://localhost:8085/index.html)
 - **로컬 파일 직접 열기**: [WebTest_시험대비_학습웹.html](file:///C:/Users/SSAFY/Desktop/JSP/WebTest_시험대비_학습웹.html)
 - **서버 재실행 명령어** (필요 시):
   ```powershell
   python -m http.server 8085 --directory "C:\Users\SSAFY\Desktop\JSP"
   ```
+
+---
+
+## 🚀 2. GitHub 원격 저장소 푸시 및 GitHub Pages 웹 배포 가이드
+
+본 프로젝트는 Git 저장소 초기화(`main` 브랜치)와 GitHub Pages 자동 인식을 위한 `index.html` 세팅이 완료되어 있습니다.
+
+### [방법 A] 원클릭 배치 스크립트 실행
+1. 폴더 내 [deploy_to_git.bat](file:///C:/Users/SSAFY/Desktop/JSP/deploy_to_git.bat) 파일을 더블 클릭합니다.
+2. 본인의 GitHub 저장소 URL(`https://github.com/iamywl/<저장소명>.git`)을 입력하면 자동으로 원격 등록, 커밋, 푸시가 완료됩니다.
+
+### [방법 B] 터미널 명령어 직접 실행
+```bash
+# 1. GitHub에서 신규 레포지토리(예: ssafy-backend-prep) 생성 후 원격 주소 연결
+git remote add origin https://github.com/iamywl/<레포지토리명>.git
+
+# 2. main 브랜치로 푸시
+git branch -M main
+git push -u origin main
+```
+
+### 🌍 GitHub Pages로 웹사이트 전 세계 실시간 배포하는 방법
+1. 푸시 완료 후 GitHub 저장소 상단 탭에서 **Settings** ➔ 좌측 사이드바 **Pages** 메뉴 클릭
+2. **Build and deployment** 항목의 **Branch** 설정:
+   - Branch: `main` 선택
+   - Folder: `/ (root)` 선택 (루트에 `index.html`이 배치되어 있어 즉시 인식됩니다)
+3. **Save** 버튼 클릭 후 약 1~2분 대기
+4. 상단에 안내되는 배포 주소(**`https://iamywl.github.io/<레포지토리명>/`**)로 접속하면 모바일, 태블릿, PC 어디서든 즉시 실전 모의고사 및 실습 가이드를 풀 수 있습니다!
 
 ---
 
